@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AppStoreDesign</string>
+    <string name="app_item_button_update">UPDATE</string>
+    <string name="app_item_whats_new">What\'s New</string>
 </resources>

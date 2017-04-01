@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/app_item_padding"
-    android:background="@color/app_item_bg_color">
+    android:background="@drawable/bg_app_item">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,6 +15,7 @@
             android:layout_width="@dimen/app_item_image_size"
             android:layout_height="@dimen/app_item_image_size"
             android:layout_weight="0"
+            android:scaleType="centerInside"
             android:background="@drawable/bg_app_item_app_icon"/>
 
         <LinearLayout
@@ -30,7 +31,6 @@
                 android:id="@+id/tv_app_item_app_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="App Name"
                 android:textSize="@dimen/app_item_app_name_text_size"
                 android:textColor="@color/app_item_app_name_text_color"/>
 
@@ -38,7 +38,6 @@
                 android:id="@+id/tv_app_item_app_version"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Version 2.12.5, 43.95 MB"
                 android:textSize="@dimen/app_item_app_info_text_size"
                 android:textColor="@color/app_item_app_info_text_color"/>
 
@@ -46,7 +45,7 @@
                 android:id="@+id/tv_app_item_whats_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="What\'s new"
+                android:text="@string/app_item_whats_new"
                 android:textSize="@dimen/app_item_app_info_text_size"
                 android:textColor="@color/app_item_app_info_text_color"/>
 
@@ -62,7 +61,7 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:gravity="center_vertical"
-            android:text="DONE"
+            android:text="@string/app_item_button_update"
             android:textSize="@dimen/app_item_button_text_size"
             android:textColor="@color/app_item_blue"
             android:textAlignment="center"
