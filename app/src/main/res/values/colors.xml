@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- RecyclerView Item Colors -->
+    <color name="app_item_bg_color">#FFFFFF</color>
+    <color name="app_item_app_name_text_color">#000000</color>
+    <color name="app_item_app_info_text_color">#606060</color>
+    <color name="app_item_blue">#0677FF</color>
+
 </resources>
