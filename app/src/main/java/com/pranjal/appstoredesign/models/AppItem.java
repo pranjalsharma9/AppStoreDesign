@@ -18,6 +18,7 @@ public class AppItem {
     // progress == -1, when the update is is not ongoing or completed.
     private int progress;
     private boolean isUpdated;
+    private boolean isActive;
     private AppUpdateDummyTask task;
 
     public AppItem (String appTitle, String versionString, String updateInfo, int imageResId) {
@@ -28,6 +29,7 @@ public class AppItem {
         this.progress = -1;
         this.task = null;
         this.isUpdated = false;
+        this.isActive = false;
     }
 
     public String getAppTitle() {
@@ -59,6 +61,7 @@ public class AppItem {
     }
 
     public void startUpdate (int position) {
+        progress = 0;
         task = new AppUpdateDummyTask(position);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -74,6 +77,14 @@ public class AppItem {
 
     public boolean isUpdated () {
         return isUpdated;
+    }
+
+    public boolean isActive () {
+        return isActive;
+    }
+
+    public void setActive (boolean isActive) {
+        this.isActive = isActive;
     }
 
 }

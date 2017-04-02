@@ -9,6 +9,7 @@
     <color name="app_item_stroke_bottom_color">#AAAAAAAA</color>
     <color name="app_item_app_name_text_color">#000000</color>
     <color name="app_item_app_info_text_color">#606060</color>
+    <color name="app_item_update_info_text_color">#404040</color>
     <color name="app_item_blue">#0677FF</color>
 
 </resources>

@@ -108,8 +108,8 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/app_item_app_info_text_size"
-        android:textColor="@color/app_item_app_info_text_color"
+        android:textSize="@dimen/app_item_update_info_text_size"
+        android:textColor="@color/app_item_update_info_text_color"
         android:paddingTop="@dimen/app_item_update_info_paddingTop"/>
 
 </LinearLayout>

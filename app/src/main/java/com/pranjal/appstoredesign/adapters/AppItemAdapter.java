@@ -160,6 +160,27 @@ public class AppItemAdapter extends RecyclerView.Adapter <AppItemAdapter.ViewHol
                     }
                 }
         );
+
+        // Setting up the updateInfo TextView.
+        if (appItem.isActive()) {
+            holder.tvWhatsNew.setVisibility(View.INVISIBLE);
+            holder.tvUpdateInfo.setVisibility(View.VISIBLE);
+            holder.tvWhatsNew.setOnClickListener(null);
+        } else {
+            holder.tvWhatsNew.setVisibility(View.VISIBLE);
+            holder.tvUpdateInfo.setVisibility(View.GONE);
+            holder.tvWhatsNew.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            appItem.setActive(true);
+                            holder.tvWhatsNew.setVisibility(View.INVISIBLE);
+                            holder.tvUpdateInfo.setVisibility(View.VISIBLE);
+                            holder.tvWhatsNew.setOnClickListener(null);
+                        }
+                    }
+            );
+        }
     }
 
     @Override

@@ -12,7 +12,7 @@
     <dimen name="app_item_text_container_padding">10dp</dimen>
     <dimen name="app_item_app_name_text_size">14sp</dimen>
     <dimen name="app_item_app_info_text_size">12sp</dimen>
-    <dimen name="app_item_update_info_text_size">12sp</dimen>
+    <dimen name="app_item_update_info_text_size">14sp</dimen>
     <dimen name="app_item_update_info_paddingTop">@dimen/app_item_padding</dimen>
     <dimen name="app_item_progress_bar_size">30dp</dimen>
     <dimen name="app_item_progress_bar_button_size">8dp</dimen>

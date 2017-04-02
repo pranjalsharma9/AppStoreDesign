@@ -24,6 +24,15 @@ public class AppUpdateDummyTask extends AsyncTask<Void, Integer, Void> {
     }
 
     @Override
+    protected void onPreExecute () {
+        Intent intent = new Intent(App.PROGRESS_BROADCAST_NAME);
+        // Setting the progress to 0 initially.
+        intent.putExtra("progress", 0);
+        intent.putExtra("position", position);
+        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
+    }
+
+    @Override
     protected Void doInBackground(Void... voids) {
         int progress = 0;
         // wait and update progress for RUN_TIME_MILLIS milliseconds (approx).
@@ -44,6 +53,16 @@ public class AppUpdateDummyTask extends AsyncTask<Void, Integer, Void> {
         Intent intent = new Intent(App.PROGRESS_BROADCAST_NAME);
         // Adding data to the intent for local broadcast.
         intent.putExtra("progress", integers[0]);
+        intent.putExtra("position", position);
+        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
+    }
+
+    // For assuring that the last broadcast received sets a progress of -1 on the appItem.
+    @Override
+    protected void onCancelled () {
+        Intent intent = new Intent(App.PROGRESS_BROADCAST_NAME);
+        // Adding data to the intent for local broadcast.
+        intent.putExtra("progress", -1);
         intent.putExtra("position", position);
         LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
