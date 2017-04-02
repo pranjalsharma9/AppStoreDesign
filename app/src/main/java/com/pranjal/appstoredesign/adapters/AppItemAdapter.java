@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.pranjal.appstoredesign.App;
 import com.pranjal.appstoredesign.R;
 import com.pranjal.appstoredesign.models.AppItem;
 
@@ -25,7 +26,11 @@ public class AppItemAdapter extends RecyclerView.Adapter <AppItemAdapter.ViewHol
     // The ViewHolder class for AppItem RecyclerView.
     //==============================================================================================
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        static final int UPDATE_COMPLETED = 0;
+        static final int UPDATE_ONGOING = 1;
+        static final int NOT_UPDATED = 2;
 
         TextView tvAppName;
         TextView tvVersionString;
@@ -48,11 +53,52 @@ public class AppItemAdapter extends RecyclerView.Adapter <AppItemAdapter.ViewHol
             pbContainer = itemView.findViewById(R.id.container_progress_bar_app_item);
         }
 
+        public void setProgress (int progress) {
+            if (progress == 100) {
+                setButtonAndProgressBarVisibility(UPDATE_COMPLETED);
+            } else {
+                progressBar.setProgress(progress);
+            }
+        }
+
+        void setButtonAndProgressBarVisibility (int state) {
+            switch (state) {
+                case UPDATE_COMPLETED : // When the update has completed.
+                    pbContainer.setVisibility(View.GONE);
+                    button.setVisibility(View.VISIBLE);
+                    button.setText(BUTTON_OPEN);
+                    button.setOnClickListener(null);
+                    break;
+                case UPDATE_ONGOING : // When the update is in progress.
+                    button.setVisibility(View.GONE);
+                    pbContainer.setVisibility(View.VISIBLE);
+                    break;
+                case NOT_UPDATED : // When the update is not done, or was cancelled.
+                    pbContainer.setVisibility(View.GONE);
+                    button.setVisibility(View.VISIBLE);
+                    button.setText(BUTTON_UPDATE);
+                    break;
+                default : // Default : When the update has completed.
+                    pbContainer.setVisibility(View.GONE);
+                    button.setVisibility(View.VISIBLE);
+                    button.setText(BUTTON_OPEN);
+                    break;
+            }
+        }
+
     }
 
     //==============================================================================================
     // Adapter definition starts here.
     //==============================================================================================
+
+    // The strings to be used in various components.
+    private static final String BUTTON_UPDATE =
+            App.getContext().getString(R.string.app_item_button_update);
+    private static final String BUTTON_OPEN =
+            App.getContext().getString(R.string.app_item_button_open);
+    private static final String WHATS_NEW =
+            App.getContext().getString(R.string.app_item_whats_new);
 
     private ArrayList<AppItem> appItems;
 
@@ -69,13 +115,51 @@ public class AppItemAdapter extends RecyclerView.Adapter <AppItemAdapter.ViewHol
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        AppItem appItem = appItems.get(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final int positionCopy = position;
+        final AppItem appItem = appItems.get(position);
         holder.tvAppName.setText(appItem.getAppTitle());
         holder.tvVersionString.setText(appItem.getVersionString());
-        holder.tvWhatsNew.setText("What's New");
+        holder.tvWhatsNew.setText(WHATS_NEW);
         holder.tvUpdateInfo.setText(appItem.getUpdateInfo());
         holder.ivAppIcon.setImageResource(appItem.getImageResId());
+
+        // Set the visibilities of the button and progressBar container based on the progress value
+        // and the update status of the app.
+        // If the app is updated make the button visible with "OPEN" as text.
+        if (appItem.isUpdated()) {
+            holder.setButtonAndProgressBarVisibility(ViewHolder.UPDATE_COMPLETED);
+        } else if (appItem.getProgress() >= 0) { // If the update is in progress, display progress.
+            holder.setButtonAndProgressBarVisibility(ViewHolder.UPDATE_ONGOING);
+            holder.progressBar.setProgress(appItem.getProgress());
+        } else { // Or if the progress hasn't been started yet, display the "UPDATE" text on button.
+            holder.setButtonAndProgressBarVisibility(ViewHolder.NOT_UPDATED);
+        }
+
+        // Setting the onClickListeners.
+        // If the item is not updated, start the update or else do not respond to the button click.
+        if (!appItem.isUpdated()) {
+            holder.button.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            holder.setButtonAndProgressBarVisibility(ViewHolder.UPDATE_ONGOING);
+                            appItem.startUpdate(positionCopy);
+                        }
+                    }
+            );
+        }
+        // If the progressBarContainer is visible, an update is in progress, stop it!
+        holder.pbContainer.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        holder.setButtonAndProgressBarVisibility(ViewHolder.NOT_UPDATED);
+                        holder.setProgress(0);
+                        appItem.stopUpdate();
+                    }
+                }
+        );
     }
 
     @Override

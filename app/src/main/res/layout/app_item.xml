@@ -46,6 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_item_whats_new"
+                android:drawableEnd="@drawable/ic_triangle_down"
                 android:textSize="@dimen/app_item_app_info_text_size"
                 android:textColor="@color/app_item_app_info_text_color"/>
 
@@ -78,10 +79,19 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="0" >
 
+            <View
+                android:layout_width="@dimen/app_item_progress_bar_size"
+                android:layout_height="@dimen/app_item_progress_bar_size"
+                android:background="@drawable/bg_app_item_progress_bar" />
+
             <ProgressBar
                 android:id="@+id/progress_bar_app_item"
                 android:layout_width="@dimen/app_item_progress_bar_size"
-                android:layout_height="@dimen/app_item_progress_bar_size" />
+                android:layout_height="@dimen/app_item_progress_bar_size"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/progress_app_item_download"
+                android:progress="0"/>
 
             <View
                 android:layout_width="@dimen/app_item_progress_bar_button_size"

@@ -1,5 +1,10 @@
 package com.pranjal.appstoredesign;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +19,27 @@ public class MainActivity extends AppCompatActivity {
 
     // The list of apps to be displayed in the recyclerView.
     private ArrayList<AppItem> appItems;
+
+    // The RecyclerView.
+    private RecyclerView recyclerView;
+
+    // The Local BroadcastReceiver to listen progress changes.
+    private BroadcastReceiver progressReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            int progress = intent.getIntExtra("progress", -1);
+            int position = intent.getIntExtra("position", -1);
+            if (position != -1) {
+                appItems.get(position).setProgress(progress);
+                AppItemAdapter.ViewHolder holder = (AppItemAdapter.ViewHolder)
+                        recyclerView.findViewHolderForAdapterPosition(position);
+                if (holder != null) {
+                    holder.setProgress(progress);
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +65,23 @@ public class MainActivity extends AppCompatActivity {
                 R.mipmap.ic_launcher));
         appItems.add(new AppItem("Seventh App", "Version 1.2.0", "A lot of information",
                 R.mipmap.ic_launcher));
+        appItems.add(new AppItem("Eighth App", "Version 2.4.3", "A lot of information",
+                R.mipmap.ic_launcher));
+        appItems.add(new AppItem("Ninth App", "Version 4.3.2", "A lot of information",
+                R.mipmap.ic_launcher));
+        appItems.add(new AppItem("Tenth App", "Version 3.4.2", "A lot of information",
+                R.mipmap.ic_launcher));
+        appItems.add(new AppItem("Eleventh App", "Version 2.4.3", "A lot of information",
+                R.mipmap.ic_launcher));
+        appItems.add(new AppItem("Twelfth App", "Version 2.4.3", "A lot of information",
+                R.mipmap.ic_launcher));
+        appItems.add(new AppItem("Thirteenth App", "Version 2.10.3", "A lot of information",
+                R.mipmap.ic_launcher));
+        appItems.add(new AppItem("Fourteenth App", "Version 1.2.0", "A lot of information",
+                R.mipmap.ic_launcher));
 
         // Getting the RecyclerView.
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_activity_main);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_activity_main);
 
         // Creating an adapter for the recyclerView.
         AppItemAdapter adapter = new AppItemAdapter(appItems);
@@ -52,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         );
 
+        // Registering the broadcast receiver with this activity.
+        LocalBroadcastManager.getInstance(this).registerReceiver(progressReceiver,
+                new IntentFilter(App.PROGRESS_BROADCAST_NAME));
     }
 
 }
