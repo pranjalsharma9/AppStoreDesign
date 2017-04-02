@@ -5,9 +5,4 @@
         android:color="#CCCCCC"/>
     <corners
         android:radius="@dimen/app_item_app_icon_bg_corner_radius"/>
-    <padding
-        android:bottom="@dimen/app_item_app_icon_bg_corner_radius"
-        android:left="@dimen/app_item_app_icon_bg_corner_radius"
-        android:right="@dimen/app_item_app_icon_bg_corner_radius"
-        android:top="@dimen/app_item_app_icon_bg_corner_radius" />
 </shape>

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,48 +54,48 @@ public class MainActivity extends AppCompatActivity {
         // Initialising the list of apps.
         appItems = new ArrayList<>();
         // Dummy apps.
-        appItems.add(new AppItem("First App", "Version 2.4.3",
+        appItems.add(new AppItem("Messages", "Version 2.4.3",
                 "A lot of information",
-                R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Second App", "Version 4.3.2",
+                R.drawable.ic_1));
+        appItems.add(new AppItem("Phone", "Version 4.3.2",
                 "A lot of information\nin two lines",
-                R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Third App", "Version 3.4.2",
+                R.drawable.ic_2));
+        appItems.add(new AppItem("Calculator", "Version 3.4.2",
                 "A lot of information\nin\nthree lines",
-                R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Fourth App", "Version 2.4.3",
+                R.drawable.ic_3));
+        appItems.add(new AppItem("Photos", "Version 2.4.3",
                 "A lot of information",
-                R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Fifth App", "Version 2.4.3",
+                R.drawable.ic_4));
+        appItems.add(new AppItem("Passbook", "Version 2.4.3",
                 "A lot of information",
-                R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Sixth App", "Version 2.10.3",
+                R.drawable.ic_5));
+        appItems.add(new AppItem("Safari", "Version 2.10.3",
                 "A lot of information\nin\nthree lines",
-                R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Seventh App", "Version 1.2.0",
+                R.drawable.ic_6));
+        appItems.add(new AppItem("Videos", "Version 1.2.0",
                 "A lot of information",
-                R.mipmap.ic_launcher));
+                R.drawable.ic_7));
         appItems.add(new AppItem("Eighth App", "Version 2.4.3",
                 "A lot of information",
-                R.mipmap.ic_launcher));
+                R.drawable.ic_1));
         appItems.add(new AppItem("Ninth App", "Version 4.3.2",
                 "A lot of information\nin\nthree lines",
-                R.mipmap.ic_launcher));
+                R.drawable.ic_2));
         appItems.add(new AppItem("Tenth App", "Version 3.4.2",
                 "A lot of information",
-                R.mipmap.ic_launcher));
+                R.drawable.ic_3));
         appItems.add(new AppItem("Eleventh App", "Version 2.4.3",
                 "A lot of information",
-                R.mipmap.ic_launcher));
+                R.drawable.ic_4));
         appItems.add(new AppItem("Twelfth App", "Version 2.4.3",
                 "A lot of information",
-                R.mipmap.ic_launcher));
+                R.drawable.ic_5));
         appItems.add(new AppItem("Thirteenth App", "Version 2.10.3",
                 "A lot of information",
-                R.mipmap.ic_launcher));
+                R.drawable.ic_6));
         appItems.add(new AppItem("Fourteenth App", "Version 1.2.0",
                 "A lot of information",
-                R.mipmap.ic_launcher));
+                R.drawable.ic_7));
 
         // Getting the RecyclerView.
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_activity_main);
@@ -116,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy () {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(progressReceiver);
+        for (AppItem appItem : appItems) {
+            appItem.stopUpdate();
+        }
         super.onDestroy();
     }
 

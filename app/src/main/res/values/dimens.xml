@@ -5,7 +5,7 @@
     <dimen name="app_item_content_height">64dp</dimen>
     <dimen name="app_item_padding">15dp</dimen>
     <dimen name="app_item_image_size">@dimen/app_item_content_height</dimen>
-    <dimen name="app_item_app_icon_bg_corner_radius">10dp</dimen>
+    <dimen name="app_item_app_icon_bg_corner_radius">15dp</dimen>
     <dimen name="app_item_button_height">28dp</dimen>
     <dimen name="app_item_button_bg_corner_radius">6dp</dimen>
     <dimen name="app_item_button_padding">10dp</dimen>

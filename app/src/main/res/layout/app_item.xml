@@ -15,7 +15,7 @@
             android:layout_width="@dimen/app_item_image_size"
             android:layout_height="@dimen/app_item_image_size"
             android:layout_weight="0"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             android:background="@drawable/bg_app_item_app_icon"/>
 
         <LinearLayout
