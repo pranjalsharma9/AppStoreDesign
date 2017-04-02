@@ -1,7 +1,16 @@
 package com.pranjal.appstoredesign.models;
 
+import android.content.Context;
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.TextView;
 
+import com.pranjal.appstoredesign.App;
+import com.pranjal.appstoredesign.R;
 import com.pranjal.appstoredesign.threadconstructs.AppUpdateDummyTask;
 
 /**
@@ -17,9 +26,15 @@ public class AppItem {
     private int imageResId;
     // progress == -1, when the update is is not ongoing or completed.
     private int progress;
+    // Boolean to tell if the app has been updated successfully.
     private boolean isUpdated;
+    // Boolean to tell the state of the "what's new" drop down updateInfo.
     private boolean isActive;
+    // The AsyncTask associated with this app's update.
     private AppUpdateDummyTask task;
+
+    // The height of the dropdown menu.
+    private float updateInfoHeight;
 
     public AppItem (String appTitle, String versionString, String updateInfo, int imageResId) {
         this.appTitle = appTitle;
@@ -30,6 +45,31 @@ public class AppItem {
         this.task = null;
         this.isUpdated = false;
         this.isActive = false;
+
+        // Code to measure the height of the wrap_content height TextView.
+        // Constructing a dummy textView and loading the text into it to get the final height.
+        TextView textView = new TextView(App.getContext());
+        int padding =
+                (int) App.getContext().getResources()
+                        .getDimension(R.dimen.app_item_update_info_paddingTop);
+        textView.setPadding(0, padding, 0, 0);
+        textView.setTypeface(Typeface.DEFAULT);
+        textView.setText(updateInfo);
+        textView.setTextSize(
+                TypedValue.COMPLEX_UNIT_PX,
+                App.getContext().getResources()
+                        .getDimension(R.dimen.app_item_update_info_text_size)
+        );
+        Point size = new Point();
+        ((WindowManager) textView.getContext().getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay().getSize(size);
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(size.x - 2*padding,
+                View.MeasureSpec.AT_MOST);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED);
+        textView.measure(widthMeasureSpec, heightMeasureSpec);
+        // Setting the updateInfo textView height.
+        updateInfoHeight = textView.getMeasuredHeight();
     }
 
     public String getAppTitle() {
@@ -87,4 +127,7 @@ public class AppItem {
         this.isActive = isActive;
     }
 
+    public float getUpdateInfoHeight () {
+        return updateInfoHeight;
+    }
 }

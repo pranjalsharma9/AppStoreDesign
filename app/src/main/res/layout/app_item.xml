@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/app_item_collapsed_height"
     android:padding="@dimen/app_item_padding"
     android:background="@drawable/bg_app_item">
 
@@ -105,7 +105,7 @@
 
     <TextView
         android:id="@+id/tv_app_item_update_info"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/app_item_update_info_text_size"

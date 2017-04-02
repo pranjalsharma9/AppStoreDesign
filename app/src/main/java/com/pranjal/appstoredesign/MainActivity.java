@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             int progress = intent.getIntExtra("progress", -1);
             int position = intent.getIntExtra("position", -1);
             if (position != -1) {
+                // If the position is valid get it's viewHolder and update the progressBar.
                 appItems.get(position).setProgress(progress);
                 AppItemAdapter.ViewHolder holder = (AppItemAdapter.ViewHolder)
                         recyclerView.findViewHolderForAdapterPosition(position);
@@ -51,33 +52,48 @@ public class MainActivity extends AppCompatActivity {
     private void init () {
         // Initialising the list of apps.
         appItems = new ArrayList<>();
-        appItems.add(new AppItem("First App", "Version 2.4.3", "A lot of information",
+        // Dummy apps.
+        appItems.add(new AppItem("First App", "Version 2.4.3",
+                "A lot of information",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Second App", "Version 4.3.2", "A lot of information",
+        appItems.add(new AppItem("Second App", "Version 4.3.2",
+                "A lot of information\nin two lines",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Third App", "Version 3.4.2", "A lot of information",
+        appItems.add(new AppItem("Third App", "Version 3.4.2",
+                "A lot of information\nin\nthree lines",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Fourth App", "Version 2.4.3", "A lot of information",
+        appItems.add(new AppItem("Fourth App", "Version 2.4.3",
+                "A lot of information",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Fifth App", "Version 2.4.3", "A lot of information",
+        appItems.add(new AppItem("Fifth App", "Version 2.4.3",
+                "A lot of information",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Sixth App", "Version 2.10.3", "A lot of information",
+        appItems.add(new AppItem("Sixth App", "Version 2.10.3",
+                "A lot of information\nin\nthree lines",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Seventh App", "Version 1.2.0", "A lot of information",
+        appItems.add(new AppItem("Seventh App", "Version 1.2.0",
+                "A lot of information",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Eighth App", "Version 2.4.3", "A lot of information",
+        appItems.add(new AppItem("Eighth App", "Version 2.4.3",
+                "A lot of information",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Ninth App", "Version 4.3.2", "A lot of information",
+        appItems.add(new AppItem("Ninth App", "Version 4.3.2",
+                "A lot of information\nin\nthree lines",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Tenth App", "Version 3.4.2", "A lot of information",
+        appItems.add(new AppItem("Tenth App", "Version 3.4.2",
+                "A lot of information",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Eleventh App", "Version 2.4.3", "A lot of information",
+        appItems.add(new AppItem("Eleventh App", "Version 2.4.3",
+                "A lot of information",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Twelfth App", "Version 2.4.3", "A lot of information",
+        appItems.add(new AppItem("Twelfth App", "Version 2.4.3",
+                "A lot of information",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Thirteenth App", "Version 2.10.3", "A lot of information",
+        appItems.add(new AppItem("Thirteenth App", "Version 2.10.3",
+                "A lot of information",
                 R.mipmap.ic_launcher));
-        appItems.add(new AppItem("Fourteenth App", "Version 1.2.0", "A lot of information",
+        appItems.add(new AppItem("Fourteenth App", "Version 1.2.0",
+                "A lot of information",
                 R.mipmap.ic_launcher));
 
         // Getting the RecyclerView.
@@ -95,6 +111,12 @@ public class MainActivity extends AppCompatActivity {
         // Registering the broadcast receiver with this activity.
         LocalBroadcastManager.getInstance(this).registerReceiver(progressReceiver,
                 new IntentFilter(App.PROGRESS_BROADCAST_NAME));
+    }
+
+    @Override
+    protected void onDestroy () {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(progressReceiver);
+        super.onDestroy();
     }
 
 }

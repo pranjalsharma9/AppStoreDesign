@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,6 +30,7 @@ public class AppItemAdapter extends RecyclerView.Adapter <AppItemAdapter.ViewHol
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        // The integer constants that represent the state of the itemView of this ViewHolder.
         static final int UPDATE_COMPLETED = 0;
         static final int UPDATE_ONGOING = 1;
         static final int NOT_UPDATED = 2;
@@ -53,14 +56,17 @@ public class AppItemAdapter extends RecyclerView.Adapter <AppItemAdapter.ViewHol
             pbContainer = itemView.findViewById(R.id.container_progress_bar_app_item);
         }
 
+        // Function to set the progressBar progress and other views on progress update.
         public void setProgress (int progress) {
+            // If the update is complete, set the views accordingly.
             if (progress == 100) {
                 setButtonAndProgressBarVisibility(UPDATE_COMPLETED);
             } else {
-                progressBar.setProgress(progress);
+                progressBar.setProgress(progress); // Else, only set the progress.
             }
         }
 
+        // Setting up the views based on the itemView's state.
         void setButtonAndProgressBarVisibility (int state) {
             switch (state) {
                 case UPDATE_COMPLETED : // When the update has completed.
@@ -100,6 +106,11 @@ public class AppItemAdapter extends RecyclerView.Adapter <AppItemAdapter.ViewHol
     private static final String WHATS_NEW =
             App.getContext().getString(R.string.app_item_whats_new);
 
+    // The normal collapsed height of the app_item.
+    private static final int COLLAPSED_HEIGHT =
+            (int) App.getContext().getResources().getDimension(R.dimen.app_item_collapsed_height);
+
+    // The data set.
     private ArrayList<AppItem> appItems;
 
     public AppItemAdapter (ArrayList<AppItem> appItems) {
@@ -161,22 +172,51 @@ public class AppItemAdapter extends RecyclerView.Adapter <AppItemAdapter.ViewHol
                 }
         );
 
-        // Setting up the updateInfo TextView.
+        // Setting up the updateInfo TextView and the "what's new" button.
         if (appItem.isActive()) {
             holder.tvWhatsNew.setVisibility(View.INVISIBLE);
-            holder.tvUpdateInfo.setVisibility(View.VISIBLE);
             holder.tvWhatsNew.setOnClickListener(null);
+            holder.itemView.getLayoutParams().height = RecyclerView.LayoutParams.WRAP_CONTENT;
         } else {
             holder.tvWhatsNew.setVisibility(View.VISIBLE);
-            holder.tvUpdateInfo.setVisibility(View.GONE);
+            holder.itemView.getLayoutParams().height = COLLAPSED_HEIGHT;
+
             holder.tvWhatsNew.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             appItem.setActive(true);
                             holder.tvWhatsNew.setVisibility(View.INVISIBLE);
-                            holder.tvUpdateInfo.setVisibility(View.VISIBLE);
                             holder.tvWhatsNew.setOnClickListener(null);
+
+                            // The animation object to make a smooth transition.
+                            Animation animation = new Animation() {
+                                // The height difference to animate.
+                                private final float DELTA_HEIGHT =
+                                        appItem.getUpdateInfoHeight();
+
+                                @Override
+                                protected void applyTransformation(float interpolatedTime,
+                                                                   Transformation t) {
+                                    // Set the height to the final value, or the intermediate value.
+                                    holder.itemView.getLayoutParams().height =
+                                            COLLAPSED_HEIGHT +
+                                                    (int) ((interpolatedTime == 1) ?
+                                                    DELTA_HEIGHT :
+                                                    (DELTA_HEIGHT * interpolatedTime));
+                                    holder.itemView.requestLayout();
+                                }
+
+                                @Override
+                                public boolean willChangeBounds() {
+                                    return true;
+                                }
+                            };
+
+                            // Setting the duration to 200ms.
+                            animation.setDuration(200);
+                            // Starting the animation onClick.
+                            holder.itemView.startAnimation(animation);
                         }
                     }
             );

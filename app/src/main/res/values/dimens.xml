@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- RecyclerView Item Dimensions -->
+    <dimen name="app_item_collapsed_height">94dp</dimen>
     <dimen name="app_item_content_height">64dp</dimen>
     <dimen name="app_item_padding">15dp</dimen>
     <dimen name="app_item_image_size">@dimen/app_item_content_height</dimen>
